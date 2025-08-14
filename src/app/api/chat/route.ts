@@ -9,12 +9,17 @@ import { getLanguageModel } from "@/lib/provider";
 import { generationPrompt } from "@/lib/prompts/generation";
 
 export async function POST(req: Request) {
-  const {
-    messages,
-    files,
-    projectId,
-  }: { messages: any[]; files: Record<string, FileNode>; projectId?: string } =
-    await req.json();
+  try {
+    console.log('Chat API called');
+    const {
+      messages,
+      files,
+      projectId,
+    }: { messages: any[]; files: Record<string, FileNode>; projectId?: string } =
+      await req.json();
+    
+    console.log('Messages:', messages.length);
+    console.log('API Key available:', !!process.env.ANTHROPIC_API_KEY);
 
   messages.unshift({
     role: "system",
@@ -34,7 +39,7 @@ export async function POST(req: Request) {
   const result = streamText({
     model,
     messages,
-    maxTokens: 10_000,
+    maxTokens: 8_000,
     maxSteps: isMockProvider ? 4 : 40,
     onError: (err: any) => {
       console.error(err);
@@ -79,7 +84,14 @@ export async function POST(req: Request) {
     },
   });
 
-  return result.toDataStreamResponse();
+    return result.toDataStreamResponse();
+  } catch (error) {
+    console.error('Chat API error:', error);
+    return new Response(JSON.stringify({ error: 'An error occurred' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
 }
 
 export const maxDuration = 120;
