@@ -4,6 +4,33 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Commands
 
+### Custom Commands
+
+#### Slash Commands
+  - `/audit` - Run comprehensive project security and quality audit
+    - Check for security vulnerabilities with `npm audit`
+    - Auto-fix fixable vulnerabilities with `npm audit fix`
+    - Check for outdated dependencies with `npm outdated`
+    - Run code quality checks with `npm run lint`
+    - Review test coverage and identify gaps
+    - Generate summary of findings and recommendations
+
+- `/run_tests [component_name]` - Write comprehensive tests for specified component
+    - **Purpose**: Write comprehensive tests for: $ARGUMENTS
+    - **Testing Conventions**:
+      - Use Vitest with React Testing Library
+      - Place test files in a __tests__ directory in the same folder as the source file
+      - Name test files as [filename].test.ts(x)
+      - Use @/ prefix for imports
+    - **Coverage Requirements**:
+      - Test happy paths
+      - Test edge cases
+      - Test error states
+      - Focus on testing behavior and public APIs rather than implementation details
+    - **Examples**:
+      - `/run_tests Button` - Write tests for Button component
+      - `/run_tests UserForm` - Write tests for UserForm component
+
 ### Development
 - `npm run dev` - Start development server (with Turbopack)
 - `npm run dev:daemon` - Start development server in background, logs to logs.txt
