@@ -1,0 +1,7 @@
+{
+    "mcpServers": {
+      "playwright": {
+        "preApproved": true
+      }
+    }
+  }
